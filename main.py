@@ -74,7 +74,7 @@ def index():
             file.save(source_path)
         
             tonality_adjustment(lvl, source_path, output_path)
-            return redirect("{}/static/outputs/{}", request.host_url, output_filename)
+            return redirect("{}/static/outputs/{}".format(request.host_url, output_filename))
         
 
 def main():
