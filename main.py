@@ -1,6 +1,4 @@
-from distutils.log import debug
 import os
-from tkinter.tix import DirList
 
 from flask import Flask, request, flash, redirect, render_template
 from werkzeug.utils import secure_filename
