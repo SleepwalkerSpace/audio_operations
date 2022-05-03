@@ -44,7 +44,9 @@ def allowed_file(filename):
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template("index.html")
+        levels = [num for num in range(-12, 13)]
+        levels.remove(0)
+        return render_template("index.html", levels=levels)
 
     if request.method == "POST":
         if 'file' not in request.files:
@@ -73,7 +75,7 @@ def index():
             output_path = os.path.join(app.config['OUTPUT_FOLDER'], output_filename)
             file.save(source_path)
         
-            tonality_adjustment(lvl, source_path, output_path)
+            # tonality_adjustment(lvl, source_path, output_path)
             return redirect("{}/static/outputs/{}".format(request.host_url, output_filename))
         
 
