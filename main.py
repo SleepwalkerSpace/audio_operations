@@ -51,7 +51,7 @@ def index():
             flash('No file part')
             return redirect(request.url)
 
-        lvl = request.args.get("lvl", default=0, type=int)
+        lvl = request.form.get("level", default=0, type=int)
         if lvl == 0 or lvl < -12 or lvl > 12:
             flash('Param level error')
             return redirect(request.url)
@@ -63,16 +63,18 @@ def index():
         
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            source_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            output_path = os.path.join(app.config['OUTPUT_FOLDER'], "{}_{}.{}".format(
+            output_filename = "{}_{}.{}".format(
                 filename.rsplit('.', 1)[0].lower(), 
                 "+{}".format(lvl) if lvl > 0 else lvl, 
                 filename.rsplit('.', 1)[1].lower()
-            ))
+            )
+
+            source_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            output_path = os.path.join(app.config['OUTPUT_FOLDER'], output_filename)
             file.save(source_path)
         
             tonality_adjustment(lvl, source_path, output_path)
-            return redirect(request.url)
+            return redirect("{}/static/outputs/{}", request.host_url, output_filename)
         
 
 def main():
