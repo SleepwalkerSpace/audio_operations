@@ -83,12 +83,12 @@ def index():
             output_path = os.path.join(app.config['OUTPUT_FOLDER'], output_filename)
             file.save(source_path)
         
-            tonality_adjustment(lvl, source_path, output_path)
-
+            ret = tonality_adjustment(lvl, source_path, output_path)
+            print("ret:",ret)
             link = "{}static/outputs/{}".format(request.host_url, output_filename)
             for i in range(12):
                 time.sleep(1)
-                
+
                 exists = os.path.exists(output_path)
                 if exists:
                     return redirect(link)
