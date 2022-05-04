@@ -15,52 +15,48 @@
     
 <body>
     <div id="app">
-        <el-upload
-        class="upload-demo"
-        ref="upload"
-        action="http://heyu.work:5000/"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :file-list="fileList"
-        :auto-upload="false">
-        <el-button slot="trigger"  type="primary">选取文件</el-button>
-        <el-input-number  v-model="level" @change="handleChange" :min="-12" :max="12" label="等级"></el-input-number>
-        <el-button style="margin-left: 10px;"  type="success" @click="submitUpload">提交</el-button>
-        <div slot="tip" class="el-upload__tip">只能上传MP3格式音频</div>
-        </el-upload>
+        <form>
+            <input type="number" value="" v-model="level" placeholder="升降级别">
+            <input type="file" @change="getFile($event)">
+            <button @click="submitForm($event)">提交</button>
+        </form>
     </div>
 </body>
 
 <script>
     var app = new Vue({
-        el: '#app',
-        data: {
-            level: 1,
-            fileList: []
+        el: "#app",
+        data(){
+          return {
+            level: 0,
+            file: null,
+          }
         },
         methods: {
-            handleChange(level){
-                console.log(level)
+            getFile(event) {
+                this.file = event.target.files[0];
+                console.log(this.file);
             },
-            beforeUpload(file){
-                let fd = new FormData();
-                fd.append('file', this.fileList[0]);
-                fd.append('srid', this.level);
-                axios.post('/',fd).then(function(res){
-                        alert('成功');
-                })
-            },
-            submitUpload() {
-                this.$refs.upload.submit();
-            },
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePreview(file) {
-                console.log(file);
+            submitForm(event) {
+                event.preventDefault();
+
+                let formData = new FormData();
+                formData.append('level', this.level);
+                formData.append('file', this.file);
+ 
+                let config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                };
+
+                axios.post('http://heyu.work:5000/', formData, config).then(function (response) {
+                    if (response.status === 200) {
+                        console.log(response.data);
+                    };
+                });
             }
         }
-    })
+    })    
 </script>
-
 </html>

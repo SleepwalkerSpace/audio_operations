@@ -58,11 +58,13 @@ def index():
             return redirect(request.url)
 
         lvl = request.form.get("level", default=0, type=int)
+        print("lvl:", lvl)
         if lvl == 0 or lvl < -12 or lvl > 12:
             flash('Param level error')
             return redirect(request.url)
             
         file = request.files['file']
+        print("file:",file)
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
@@ -80,7 +82,8 @@ def index():
             file.save(source_path)
         
             tonality_adjustment(lvl, source_path, output_path)
-            return redirect("{}/static/outputs/{}".format(request.host_url, output_filename))
+            print(request.host_url)
+            return redirect("{}static/outputs/{}".format(request.host_url, output_filename))
         
 
 def main():
