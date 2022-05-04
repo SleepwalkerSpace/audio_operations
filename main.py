@@ -34,6 +34,7 @@ project_static_outputs_path = os.path.join(project_static_path, "outputs")
 app = Flask(__name__, static_url_path="/static", )
 CORS(app, supports_credentials=True)
 
+app.config['SECRET_KEY'] = "PaSsWoRd"
 app.config['UPLOAD_FOLDER'] = project_static_uploads_path
 app.config['OUTPUT_FOLDER'] = project_static_outputs_path
 
