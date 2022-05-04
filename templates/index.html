@@ -20,6 +20,8 @@
             <input type="file" @change="getFile($event)">
             <button @click="submitForm($event)">提交</button>
         </form>
+
+        <el-link href="{{link}}" target="_blank">下载链接</el-link>
     </div>
 </body>
 
@@ -30,6 +32,7 @@
           return {
             level: 0,
             file: null,
+            link: "#"
           }
         },
         methods: {
@@ -53,7 +56,7 @@
                 axios.post('http://heyu.work:5000/', formData, config).then(function (response) {
                     if (response.status === 200) {
                         console.log(response.data);
-                        window.open(response.data);
+                        this.link = response.data;
                     };
                 });
             }
