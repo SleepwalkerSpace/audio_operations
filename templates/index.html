@@ -3,10 +3,64 @@
 <head>
     <meta charset="utf-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    
     <title>升降音调</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
     
 <body>
+    <div id="app">
+        <el-upload
+        class="upload-demo"
+        ref="upload"
+        action="http://heyu.work:5000/"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :file-list="fileList"
+        :auto-upload="false">
+        <el-button slot="trigger"  type="primary">选取文件</el-button>
+        <el-input-number  v-model="level" @change="handleChange" :min="-12" :max="12" label="等级"></el-input-number>
+        <el-button style="margin-left: 10px;"  type="success" @click="submitUpload">提交</el-button>
+        <div slot="tip" class="el-upload__tip">只能上传MP3格式音频</div>
+        </el-upload>
+    </div>
 </body>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            level: 1,
+            fileList: []
+        },
+        methods: {
+            handleChange(level){
+                console.log(level)
+            },
+            beforeUpload(file){
+                let fd = new FormData();
+                fd.append('file', this.fileList[0]);
+                fd.append('srid', this.level);
+                axios.post('/',fd).then(function(res){
+                        alert('成功');
+                })
+            },
+            submitUpload() {
+                this.$refs.upload.submit();
+            },
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview(file) {
+                console.log(file);
+            }
+        }
+    })
+</script>
+
 </html>
