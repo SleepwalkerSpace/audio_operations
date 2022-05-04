@@ -11,14 +11,15 @@ from pydub import AudioSegment
 
 def tonality_adjustment(level:int, source_path:str, output_path:str):
     if level < -12 or level > 12:
-        return 0
+        return 400
     
     try:
         frame_rate = AudioSegment.from_mp3(source_path).frame_rate
     
     except:
-        return 0
+        return 500
 
+    print("frame_rate:", frame_rate)
     status = os.system(
         "ffmpeg -i '{}' -filter_complex 'asetrate={}*2^({}/12),atempo=1/2^({}/12)' {}".format(
             source_path, frame_rate, level, level, output_path
