@@ -1,4 +1,6 @@
+import imp
 import os
+import time
 
 from flask import Flask, request, flash, redirect, render_template
 from flask_cors import CORS
@@ -85,10 +87,12 @@ def index():
 
             link = "{}static/outputs/{}".format(request.host_url, output_filename)
             for i in range(12):
+                time.sleep(1)
+                
                 exists = os.path.exists(output_path)
                 if exists:
                     return redirect(link)
-
+                
             return redirect(link)
         
 
