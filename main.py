@@ -82,8 +82,14 @@ def index():
             file.save(source_path)
         
             tonality_adjustment(lvl, source_path, output_path)
-            print(request.host_url)
-            return redirect("{}static/outputs/{}".format(request.host_url, output_filename))
+
+            link = "{}static/outputs/{}".format(request.host_url, output_filename)
+            for i in range(12):
+                exists = os.path.exists(output_path)
+                if exists:
+                    return redirect(link)
+
+            return redirect(link)
         
 
 def main():
