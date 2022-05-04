@@ -79,7 +79,7 @@ def index():
             output_path = os.path.join(app.config['OUTPUT_FOLDER'], output_filename)
             file.save(source_path)
         
-            # tonality_adjustment(lvl, source_path, output_path)
+            tonality_adjustment(lvl, source_path, output_path)
             return redirect("{}/static/outputs/{}".format(request.host_url, output_filename))
         
 
